@@ -1,4 +1,4 @@
-<!DOCTYPE html><!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Sun Jun 01 2025 03:30:19 GMT+0000 (Coordinated Universal Time)  -->
+<!DOCTYPE html><!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Mon Jun 02 2025 02:48:59 GMT+0000 (Coordinated Universal Time)  -->
 <html data-wf-page="683b8a24e15597812704cf7d" data-wf-site="683a681ec3b49d5f05b38377">
 <head>
   <meta charset="utf-8">
@@ -26,18 +26,86 @@
         <h1 class="h2-heading">What Did You Learn?</h1>
         <p class="subheading">You’ve completed the lessons — great work!<br>Let’s see how much you’ve grown. This quick quiz uses the same questions from the start so you can see your progress.<br>‍<br>Just do your best — every step forward counts.</p>
         <div class="card-shadow">
-          <div class="code-embed w-embed w-iframe w-script"><iframe data-tally-src="https://tally.so/embed/wzoWAq?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="200" frameborder="0" marginheight="0" marginwidth="0" title="Post-Test"></iframe>
-            <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
+          <div class="code-embed w-embed w-iframe w-script"><iframe data-tally-src="https://tally.so/embed/wzoWAq?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="382" frameborder="0" marginheight="0" marginwidth="0" title="Post-Test">
+            </iframe>
+            <script>
+  // Load Tally Embed if not already loaded
+  (function() {
+    var d = document,
+        w = "https://tally.so/widgets/embed.js",
+        v = function() {
+          if (typeof Tally !== "undefined") {
+            Tally.loadEmbeds();
+          } else {
+            d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach(function(e) {
+              e.src = e.dataset.tallySrc;
+            });
+          }
+        };
+    if (typeof Tally !== "undefined") {
+      v();
+    } else if (d.querySelector('script[src="' + w + '"]') == null) {
+      var s = d.createElement("script");
+      s.src = w;
+      s.onload = v;
+      s.onerror = v;
+      d.body.appendChild(s);
+    }
+  })();
+  // Disable button on page load
+  document.addEventListener("DOMContentLoaded", function () {
+    const btn = document.getElementById("postContinueBtn");
+    if (btn) {
+      btn.style.opacity = "0.5";
+      btn.style.pointerEvents = "none";
+    }
+  });
+  // Listen for form submission via Tally event
+  window.addEventListener("message", function (event) {
+    try {
+      const data = JSON.parse(event.data);
+      if (data.event === "Tally.FormSubmitted") {
+        const btn = document.getElementById("postContinueBtn");
+        if (btn) {
+          btn.style.opacity = "1";
+          btn.style.pointerEvents = "auto";
+        }
+      }
+    } catch (e) {
+      // Ignore non-JSON or unrelated messages
+    }
+  });
+</script>
           </div>
         </div>
         <div class="button-group">
-          <a href="lesson-3.html" class="button secondary-button">Back</a>
-          <a href="completion-sources.html" class="button">Continue</a>
+          <a href="lesson-3.html" class="button secondary-button">Back to Credit Decisions</a>
+          <a id="postContinueBtn" href="completion-sources.html" class="button w-button">Finish Module</a>
         </div>
       </div>
     </div>
   </section>
   <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=683a681ec3b49d5f05b38377" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script src="js/webflow.js" type="text/javascript"></script>
+  <script>
+  // Generate a unique ID if one doesn't exist
+  function getOrCreateSessionId() {
+    let id = localStorage.getItem('sessionId');
+    if (!id) {
+      id = 'id-' + Math.random().toString(36).substring(2, 12);
+      localStorage.setItem('sessionId', id);
+    }
+    return id;
+  }
+  // Append sessionId to Tally embeds as a query param
+  const sessionId = getOrCreateSessionId();
+  document.querySelectorAll("iframe[data-tally-src]").forEach(iframe => {
+    let src = iframe.getAttribute("data-tally-src");
+    if (!src.includes("sessionId=")) {
+      const delimiter = src.includes("?") ? "&" : "?";
+      iframe.setAttribute("data-tally-src", `${src}${delimiter}sessionId=${sessionId}`);
+    }
+  });
+</script>
 </body>
 </html>
